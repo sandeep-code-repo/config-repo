@@ -55,15 +55,15 @@ eureka:
       defaultZone: http://localhost:9092/eureka/
 
 #Keycloak settings
-#rest:
-#  security:
-#    enabled: true
-#    apimatcher1: /user/**
-#    apimatcher2: /user
-#    cors:
-#      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
-#      max-age: 3600
-#    issuer-uri: http://keycloak-ppes-product-booking.10.100.50.62.nip.io/auth/realms/Booking
+rest:
+  security:
+    enabled: false
+    apimatcher1: /user/**
+    apimatcher2: /user
+    cors:
+      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+      max-age: 3600
+    issuer-uri: http://keycloak-ppes-product-booking.10.100.50.62.nip.io/auth/realms/Booking
 
 security:
   oauth2:
