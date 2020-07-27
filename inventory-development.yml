@@ -1,0 +1,90 @@
+server:
+  port: 4005 
+#db
+spring.couchbase:
+  bootstrap-hosts: 10.100.50.62
+  bucket:
+    name: AvailableSlotsBucket
+    username: InventoryUser
+    password: InventoryUser
+    
+#KeyCloak Security Properties
+ 
+rest:
+  security:
+    enabled: true
+    slotApiMatcher1: /slotInventoryService/**
+    inventoryApiMatcher2: /productInventoryService/**
+    cors:
+      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+      max-age: 3600
+    issuer-uri: http://keycloak-ppes-product-booking.10.100.50.62.nip.io/auth/realms/Booking
+
+security:
+  oauth2:
+    resource:
+      id: INVENTORY-SERVICE
+      token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
+      user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
+    client:
+      client-id: INVENTORY-SERVICE
+      client-secret: 980db743-5847-4c85-8869-bd49330ad6bb
+      user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
+      access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
+      scope: openid
+      grant-type: client_credentials
+
+
+#message strings
+serviceimpl:
+  norecord: No records found.
+  updatesuccess: Record successfully updated for product ID-
+  updateInventorySuccess: Record successfully updated  
+  deleted: Entry removed succesfully for product ID-
+  deletedInventory: Entry removed succesfully
+  insertfailed: Insert failed for product ID- 
+  insertInventoryFailed: Insert failed
+  alreadyexists: Document already exists.
+  created: Entry created succesfully for product ID-  
+  found: Entry Found. 
+  notenoughservices: Not enough services available for this Slot to allot. 
+  partialupdate: Record updated Partially.
+  notDeleted: Entry not removed succesfully
+  createdInventory: Entry created succesfully
+  quantityNotAvailable: Quantity not available
+
+spring:
+  data:
+    couchbase:
+      repositories:
+        type: auto
+      auto-index: true 
+  application:
+    name: Inventory Service
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+        username: admin
+        password: ENC(witbjVpTwG2RwY/JIrk48Q==)
+jasypt:
+  encryptor:
+    password: appkey
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+eureka:
+  instance:
+    #instance-id: ${spring.application.name}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+  client:
+    enabled: false
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:9092/eureka/

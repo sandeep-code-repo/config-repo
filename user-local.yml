@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: User
+  boot:
+    admin:
+      client:
+        url: http://localhost:4007
+        username: admin
+        password: ENC(Omk29Z5ttFpLSgeJUG29WA==)
+  datasource:
+    url: jdbc:mysql://localhost:3306/booking
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+  devtools:
+    add-properties: false
+server:
+  port: 9099
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /userAPIDoc
+
+jasypt:
+  encryptor:
+    password: appkey
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+  client:
+    enabled: false
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:9092/eureka/
+
+#Keycloak settings
+#rest:
+#  security:
+#    enabled: true
+#    apimatcher1: /user/**
+#    apimatcher2: /user
+#    cors:
+#      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+#      max-age: 3600
+#    issuer-uri: http://keycloak-ppes-product-booking.10.100.50.62.nip.io/auth/realms/Booking
+
+security:
+  oauth2:
+    resource:
+      id: UserService
+      token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
+      user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
+    client:
+      client-id: UserService
+      client-secret: 85d0ea57-fa0f-410a-b036-d96b5fb3acc1
+      user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
+      access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
+      scope: openid
+      grant-type: client_credentials

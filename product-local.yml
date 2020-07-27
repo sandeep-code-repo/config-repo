@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: Product
+  boot:
+    admin:
+      client:
+        url: http://localhost:4007
+        username: admin
+        password: ENC(witbjVpTwG2RwY/JIrk48Q==)
+  devtools:
+    add-properties: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/booking
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ENC(62JYxtsRXq3KTmjPhdgf2v7O+oUwGsj+)
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+jasypt:
+  encryptor:
+    password: appkey
+server:
+  port: 4010
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /productAPIDoc
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+  client:
+    enabled: false
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://serviceregistry.ppes-product-booking.svc:4006/eureka/
+
+#keyclock settings
+rest:
+  security:
+    enabled: true
+    productApiMatcher1: /product
+    productApiMatcher2: /product/**
+    offerApiMatcher1: /offer
+    offerApiMatcher2: /offer/**
+    cors:
+      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+      max-age: 3600
+    issuer-uri: http://keycloak-ppes-product-booking.10.100.50.62.nip.io/auth/realms/Booking
+
+security:
+  oauth2:
+    resource:
+      id: PRODUCT
+      token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
+      user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
+    client:
+      client-id: PRODUCT
+      client-secret: f8e54ca4-e361-410e-ad90-5d72a4ba814f
+      user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
+      access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
+      scope: openid
+      grant-type: client_credentials

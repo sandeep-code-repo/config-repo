@@ -1,0 +1,49 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:9094
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+        username: admin
+        password: ENC(witbjVpTwG2RwY/JIrk48Q==)
+  devtools:
+    add-properties: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/booking
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Act@1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+jasypt:
+  encryptor:
+    password: appkey
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /productAPIDoc
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+  client:
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://eureka-registry.com:9092/eureka/

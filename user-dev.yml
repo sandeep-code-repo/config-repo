@@ -1,0 +1,84 @@
+spring:
+  application:
+    name: User
+  boot:
+    admin:
+      client:
+        url: http://adminconsole-ppes-product-booking.10.100.50.62.nip.io/
+        username: admin
+        password: ENC(witbjVpTwG2RwY/JIrk48Q==)
+        instance:
+          service-url: http://user-ppes-product-booking.10.100.50.62.nip.io
+
+  datasource:
+    url: jdbc:mysql://mysql.ppes-product-booking.svc/booking
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ENC(bgEMWktasxY+3kPE7esG8Q==)
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+  devtools:
+    add-properties: false
+server:
+  port: 4009
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /userAPIDoc
+
+jasypt:
+  encryptor:
+    password: appkey
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+  client:
+    enabled: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://serviceregistry.ppes-product-booking.svc:4006/eureka/
+
+#KeyCloak Security Properties
+
+rest:
+  security:
+    enabled: true
+    apimatcher1: /user/**
+    apimatcher2: /user
+    cors:
+      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+      max-age: 3600
+    issuer-uri: http://keycloak-ppes-product-booking.10.100.50.62.nip.io/auth/realms/Booking
+
+security:
+  oauth2:
+    resource:
+      id: UserService
+      token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
+      user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
+    client:
+      client-id: UserService
+      client-secret: 85d0ea57-fa0f-410a-b036-d96b5fb3acc1
+      user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
+      access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
+      scope: openid
+      grant-type: client_credentials

@@ -1,0 +1,47 @@
+server:
+  port: 4008
+couchbase:
+    hostname: 10.100.50.62:8091
+    bucketname: Review
+    password: ENC(B8NT42+LDC6mBFT8pKUBVo3p6GlX4zmR)
+    username: Administrator
+spring:
+  data:
+    couchbase:
+      repositories:
+        type: auto
+      auto-index: true 
+  application:
+    name: Reviews
+  boot:
+    admin:
+      client:
+        url: http://localhost:4007
+        username: admin
+        password: ENC(witbjVpTwG2RwY/JIrk48Q==)
+jasypt:
+  encryptor:
+    password: appkey
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /ReviewsAPIDoc
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 20
+  client:
+    enabled : false
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://serviceregistry.ppes-product-booking.svc:4006/eureka/   
